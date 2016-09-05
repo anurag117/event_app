@@ -1,71 +1,27 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Title:</strong>
-  <%= @event.title %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @event.description %>
-</p>
-
-<p>
-  <strong>Ticket fee:</strong>
-  <%= @event.ticket_fee %>
-</p>
-
-<p>
-  <strong>Start time:</strong>
-  <%= @event.start_time %>
-</p>
-
-<p>
-  <strong>Duration:</strong>
-  <%= @event.duration %>
-</p>
-
-<div>
-  <h1><%= "Users attending(#{@event.users.count}):"  %></h1></br>
-  
-  <table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Gender</th>
-      <th>Phone number</th>
-      <th>Email id</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @event.users.each do |user| %>
-      <tr>
-        <td><%= user.name %></td>
-        <td><%= user.gender %></td>
-        <td><%= user.phone_number %></td>
-        <td><%= user.email_id %></td>
-        <td>
-          <% if @event.fresh? && current_user.present? && current_user.admin %>
-          <% btntext = @event.users.include?(user) ? 'Unattend' : 'Attend'%>
-          <%= button_to btntext, method: 'post', action: 'admin_respond', user_id: user.id %>
-          <% end %>
-        </td>
-        
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
+<%- model_class = Event -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
 </div>
 
-<% if @event.fresh? %>
-  <% btntext = @event.users.include?(current_user) ? 'Unattend' : 'Attend'%>
-  <%= button_to btntext, {method: 'post', action: 'respond'} %>
-<% end %>
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:title) %>:</strong></dt>
+  <dd><%= @event.title %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:description) %>:</strong></dt>
+  <dd><%= @event.description %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:ticket_fee) %>:</strong></dt>
+  <dd><%= @event.ticket_fee %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:start_time) %>:</strong></dt>
+  <dd><%= @event.start_time %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:duration) %>:</strong></dt>
+  <dd><%= @event.duration %></dd>
+</dl>
 
-<% if current_user.present? &&  current_user.admin %>
-	<%= link_to 'Edit', edit_event_path(@event) %>
-<% end %>
+<%= link_to t('.back', :default => t("helpers.links.back")),
+              events_path, :class => 'btn btn-default'  %>
+<%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_event_path(@event), :class => 'btn btn-default' %>
+<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              event_path(@event),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>

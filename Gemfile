@@ -34,6 +34,8 @@ gem 'email_validator'
 
 gem 'bcrypt', '~> 3.1.7'
 
+gem 'twitter-bootstrap-rails'
+
 
 
 group :development, :test do

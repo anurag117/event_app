@@ -1,0 +1,71 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @event.title %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @event.description %>
+</p>
+
+<p>
+  <strong>Ticket fee:</strong>
+  <%= @event.ticket_fee %>
+</p>
+
+<p>
+  <strong>Start time:</strong>
+  <%= @event.start_time %>
+</p>
+
+<p>
+  <strong>Duration:</strong>
+  <%= @event.duration %>
+</p>
+
+<div>
+  <h1><%= "Users attending(#{@event.users.count}):"  %></h1></br>
+  
+  <table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Gender</th>
+      <th>Phone number</th>
+      <th>Email id</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @event.users.each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+        <td><%= user.gender %></td>
+        <td><%= user.phone_number %></td>
+        <td><%= user.email_id %></td>
+        <td>
+          <% if @event.fresh? && current_user.present? && current_user.admin %>
+          <% btntext = @event.users.include?(user) ? 'Unattend' : 'Attend'%>
+          <%= button_to btntext, method: 'post', action: 'admin_respond', user_id: user.id %>
+          <% end %>
+        </td>
+        
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+</div>
+
+<% if @event.fresh? %>
+  <% btntext = @event.users.include?(current_user) ? 'Unattend' : 'Attend'%>
+  <%= button_to btntext, {method: 'post', action: 'respond'} %>
+<% end %>
+
+<% if current_user.present? &&  current_user.admin %>
+	<%= link_to 'Edit', edit_event_path(@event) %>
+<% end %>

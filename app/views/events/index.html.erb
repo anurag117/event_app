@@ -15,12 +15,12 @@
   </thead>
 
   <tbody>
-    <% @events.each do |event| %>
+    <% @events.order("created_at DESC").each do |event| %>
       <tr>
         <td><%= event.title %></td>
         <td><%= event.description %></td>
-        <td><%= event.ticket_fee %></td>
-        <td><%= event.start_time %></td>
+        <td><%= event.discounted_ticket_fee(current_user) %></td>
+        <td><%= event.start_time.to_formatted_s(:short) %></td>
         <td><%= event.duration %></td>
         <td><%= link_to 'Show', event %></td>
         <% if current_user.present? && current_user.admin %>
@@ -35,5 +35,6 @@
 <br>
 
 <% if current_user.present? && current_user.admin %>
-  <%= link_to 'New Event', new_event_path %>
+  <%= link_to 'New Event', new_event_path %>&nbsp; &nbsp; &nbsp; &nbsp;
+  <%= link_to 'All Users', users_path %>
 <% end %>

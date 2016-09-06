@@ -11,6 +11,8 @@
   <body>
 
     <div id="user_nav">
+      <%= link_to "Anurag Event App", root_path %> 
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
       <% if current_user %>
         Logged in as <%= current_user.email_id %>.
         <%= link_to "Log out", logout_path %>
@@ -19,6 +21,8 @@
         <%= link_to "log in", login_path %>
       <% end %>
     </div>
+
+    <%= content_tag :div, flash[:alert], :id => "flash_alert" %>
 
     <%= yield %>
   </body>

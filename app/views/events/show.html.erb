@@ -12,12 +12,12 @@
 
 <p>
   <strong>Ticket fee:</strong>
-  <%= @event.ticket_fee %>
+  <%= @event.discounted_ticket_fee(current_user) %>
 </p>
 
 <p>
   <strong>Start time:</strong>
-  <%= @event.start_time %>
+  <%= @event.start_time.to_formatted_s(:short) %>
 </p>
 
 <p>
@@ -47,8 +47,7 @@
         <td><%= user.email_id %></td>
         <td>
           <% if @event.fresh? && current_user.present? && current_user.admin %>
-          <% btntext = @event.users.include?(user) ? 'Unattend' : 'Attend'%>
-          <%= button_to btntext, method: 'post', action: 'admin_respond', user_id: user.id %>
+          <%= button_to 'Unattend', method: 'post', action: 'admin_respond', user_id: user.id %>
           <% end %>
         </td>
         
@@ -61,7 +60,7 @@
 
 </div>
 
-<% if @event.fresh? %>
+<% if @event.fresh? && current_user.present? %>
   <% btntext = @event.users.include?(current_user) ? 'Unattend' : 'Attend'%>
   <%= button_to btntext, {method: 'post', action: 'respond'} %>
 <% end %>
